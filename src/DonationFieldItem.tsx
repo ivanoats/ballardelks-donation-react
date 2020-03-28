@@ -1,36 +1,45 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 type DonationFieldItemProps = {
-  code: string,
-  suggestedAmount: number,
-  description: string
-}
+  name: string;
+  suggestedAmount?: number;
+  description: string;
+  onChange?: React.FormEvent;
+};
 
-type DonationFieldItemState =  {
-  amount: number
-}
+type DonationFieldItemState = {
+  amount: number;
+};
 
-class DonationFieldItem extends Component<DonationFieldItemProps, DonationFieldItemState> {
-
+class DonationFieldItem extends Component<
+  DonationFieldItemProps,
+  DonationFieldItemState
+> {
   static defaultProps = {
-    suggestedAmount: 10
-  }
+    suggestedAmount: 10,
+  };
 
   constructor(props: DonationFieldItemProps) {
-    super(props)
+    super(props);
     this.state = {
-      amount: 10
-    }
+      amount: 10,
+    };
   }
   render() {
     return (
       <p>
-        <input type="text" id={this.props.code} defaultValue={this.props.suggestedAmount} />
-        <label htmlFor={this.props.code}>{this.props.description} <span className="small">${this.props.suggestedAmount} Suggested</span></label>
+        <input
+          type="text"
+          id={this.props.name}
+          defaultValue={this.props.suggestedAmount}
+        />
+        <label htmlFor={this.props.name}>
+          {this.props.description}{" "}
+          <span className="small">${this.props.suggestedAmount} Suggested</span>
+        </label>
       </p>
-    )
+    );
   }
-
 }
 
-export default DonationFieldItem
+export default DonationFieldItem;

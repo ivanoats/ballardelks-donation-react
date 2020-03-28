@@ -1,5 +1,5 @@
-import React from 'react';
-import PaypalButton from './PaypalButton'
+import React from "react";
+import PaypalButton from "./PaypalButton";
 
 function App() {
   return (

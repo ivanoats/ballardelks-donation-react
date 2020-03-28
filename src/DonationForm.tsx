@@ -1,89 +1,88 @@
-import React, { Component } from "react";
-import PayPalExpressBtn from "react-paypal-express-checkout";
-import DonationFieldItem from "./DonationFieldItem";
+import React, { Component } from 'react'
+import PayPalExpressBtn from 'react-paypal-express-checkout'
 
 type DonationFormState = {
-  total: number;
-  formControls: any | null;
-};
+  total: number
+  formControls: any | null
+}
 
 type DonationFormProps = {
-  membershipRate: number;
-};
+  membershipRate: number
+}
 
 class DonationForm extends Component<DonationFormProps, DonationFormState> {
   static defaultProps = {
     membershipRate: 119,
-  };
+  }
 
   constructor(props: DonationFormProps) {
-    super(props);
+    super(props)
     this.state = {
-      formControls: {},
+      formControls: {
+        elksnf: { value: 10 },
+        tallelks: { value: 10 },
+      },
       total: 0,
-    };
+    }
   }
 
   changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    let target = event.target as HTMLInputElement;
-    const name = target.name;
-    const amount = target.value;
+    let target = event.target as HTMLInputElement
+    const name = target.name
+    const value = Number.parseInt(target.value, 10) // NaN if letter
 
-    this.setState({
+    const newState = {
       formControls: {
-        [name]: amount,
+        ...this.state.formControls,
+        [name]: { ...this.state.formControls[name], value },
       },
-    });
-  };
+    }
+
+    console.log(newState)
+
+    const totals = Object.values(newState.formControls).map((v: any) => v.value)
+    console.log(totals)
+    const total = totals.reduce((a: number, b: number) => a + b, 0)
+    this.setState({
+      ...newState,
+      total: total,
+    })
+  }
 
   render() {
     const client = {
       sandbox: process.env.REACT_APP_PAYPAL_SANDBOX,
-    };
+    }
     return (
       <div>
         <form>
           <fieldset>
             <h5>Lodge Required Charities</h5>
-            <DonationFieldItem
+            <label htmlFor="elksnf">Elks National Foundation</label>
+            <input
               name="elksnf"
-              description="Elks National Foundation"
               onChange={this.changeHandler}
-              suggestedAmount={this.state.formControls.name}
+              defaultValue={this.state.formControls.elksnf.value}
             />
-            <DonationFieldItem
+            <label htmlFor="tallelks">
+              State Major Project Tall Elks Therapy Program
+            </label>
+            <input
               name="tallelks"
-              description="State Major Project Tall Elks Therapy Program"
-            />
-            <h5>Lodge Charitable Items</h5>
-            <DonationFieldItem
-              name="scholarship"
-              description="Lodge Scholarship Fund"
-            />
-            <DonationFieldItem
-              name="childrens"
-              description="Children's Hospital Donation"
-            />
-            <DonationFieldItem
-              name="xmasbaskets"
-              description="Christmas Baskets"
-              suggestedAmount={5}
-            />
-            <DonationFieldItem
-              name="buildingfund"
-              description="Building Fund"
+              onChange={this.changeHandler}
+              defaultValue={this.state.formControls.tallelks.value}
             />
           </fieldset>
         </form>
         <p>Total: {this.state.total}</p>
         <PayPalExpressBtn
           client={client}
-          currency={"USD"}
+          currency={'USD'}
           total={this.state.total}
         />
       </div>
-    );
+    )
   }
 }
 
-export default DonationForm;
+export default DonationForm

@@ -11,7 +11,7 @@ type DonationFormProps = {
   membershipRate: number;
 };
 
-class PaypalButton extends Component<DonationFormProps, DonationFormState> {
+class DonationForm extends Component<DonationFormProps, DonationFormState> {
   static defaultProps = {
     membershipRate: 119,
   };
@@ -24,10 +24,10 @@ class PaypalButton extends Component<DonationFormProps, DonationFormState> {
     };
   }
 
-  changeHandler = (event: React.FormEvent<HTMLInputElement>): void => {
-    event.preventDefault();
-    const name = event.currentTarget.nodeName;
-    const amount = event.currentTarget.nodeValue;
+  changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    let target = event.target as HTMLInputElement;
+    const name = target.name;
+    const amount = target.value;
 
     this.setState({
       formControls: {
@@ -86,4 +86,4 @@ class PaypalButton extends Component<DonationFormProps, DonationFormState> {
   }
 }
 
-export default PaypalButton;
+export default DonationForm;

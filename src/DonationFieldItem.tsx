@@ -4,7 +4,7 @@ type DonationFieldItemProps = {
   name: string;
   suggestedAmount?: number;
   description: string;
-  onChange?: React.FormEvent;
+  onChange?: React.ChangeEvent<HTMLInputElement>;
 };
 
 type DonationFieldItemState = {

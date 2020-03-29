@@ -63,7 +63,8 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     }
 
     const totals = Object.values(newState.formControls).map((v: any) => v.value)
-    const total = totals.reduce((a: number, b: number) => a + b, 0)
+    const total =
+      this.props.dues + totals.reduce((a: number, b: number) => a + b, 0)
     this.setState({
       ...newState,
       total: total,
@@ -80,18 +81,27 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
           <form>
             <fieldset style={{ border: 0 }}>
               <p>
-                <TextField label="Member Name" required />
+                <TextField
+                  label="Member Name"
+                  required
+                  style={{ padding: 25 }}
+                />
               </p>
               <p>
-                <TextField label="Membership Nuumber" required />
+                <TextField
+                  style={{ padding: 25 }}
+                  label="Membership Nuumber"
+                  required
+                />
               </p>
-              <h4>Regular Prepaid Dues 12 Months</h4>
+              <h3>Regular Prepaid Dues 12 Months</h3>
               <p>
                 Including per captia dues and assessments for Grand Lodge and
                 the Washington State Elks Association in accordance with the
                 Constitution and Section 14.300 of the Statues of the Order.
               </p>
               <TextField
+                style={{ padding: 25 }}
                 id="dues"
                 label="Annual Dues"
                 required
@@ -105,7 +115,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                   ),
                 }}
               />
-              <h4>Lodge Required Charities</h4>
+              <h3>Lodge Required Charities</h3>
 
               <DonationField
                 name="elksnf"
@@ -117,7 +127,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                 description="State Major Project Tall Elks Therapy Program"
                 onChange={this.changeHandler}
               />
-              <h4>Lodge Charitable Items</h4>
+              <h3>Lodge Charitable Items</h3>
               <DonationField
                 name="scholarship"
                 description="Lodge Scholarship Fund"
@@ -140,9 +150,18 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                 description="Building Fund"
                 onChange={this.changeHandler}
               />
+              <p>
+                <TextField
+                  multiline
+                  name="comment"
+                  variant="outlined"
+                  helperText="Comments or Address Updates"
+                  rows="4"
+                />
+              </p>
             </fieldset>
           </form>
-          <p>Total: $ {this.state.total}</p>
+          <h3>Total: $ {this.state.total}</h3>
           <PayPalExpressBtn
             client={client}
             currency={'USD'}

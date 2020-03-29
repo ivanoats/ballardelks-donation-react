@@ -13,6 +13,7 @@ export default function (props: DonationFieldProps) {
   const sd = props.suggestedDonation ? props.suggestedDonation : 10
   return (
     <TextField
+      style={{ padding: 25 }}
       id={props.name}
       name={props.name}
       defaultValue={sd}

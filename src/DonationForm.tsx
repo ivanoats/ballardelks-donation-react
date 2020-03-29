@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PayPalExpressBtn from 'react-paypal-express-checkout'
-import DonationFieldItem from './DonationFieldItem'
+import DonationField from './DonationField'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
@@ -14,12 +14,12 @@ type DonationFormState = {
 }
 
 type DonationFormProps = {
-  membershipRate: number
+  dues: number
 }
 
 class DonationForm extends Component<DonationFormProps, DonationFormState> {
   static defaultProps = {
-    membershipRate: 119,
+    dues: 119,
   }
 
   suggestedDonation: StrNumber = {
@@ -39,12 +39,6 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
 
   state: DonationFormState = {
     formControls: this.mapToValueObject(this.suggestedDonation),
-    /*{
-      test: { value: this.suggestedDonation.test },
-      elksnf: { value: this.suggestedDonation.elksnf },
-      tallelks: { value: this.suggestedDonation.tallelks },
-      scholarship: { value: this.suggestedDonation.scholarship },
-    },*/
     total: 0,
   }
   constructor(props: DonationFormProps) {
@@ -86,12 +80,11 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                 the Washington State Elks Association in accordance with the
                 Constitution and Section 14.300 of the Statues of the Order.
               </p>
-              <h4>Lodge Required Charities</h4>
               <TextField
-                id="test"
-                label="Elks are awesome fund"
-                defaultValue={this.suggestedDonation['test']}
-                helperText={`Suggested donation: $${this.suggestedDonation['test']}`}
+                id="dues"
+                label="Annual Dues"
+                defaultValue={this.props.dues}
+                helperText={`Requied Dues${this.props.dues}`}
                 onChange={this.changeHandler}
                 InputProps={{
                   startAdornment: (
@@ -99,18 +92,20 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                   ),
                 }}
               />
-              <DonationFieldItem
+              <h4>Lodge Required Charities</h4>
+
+              <DonationField
                 name="elksnf"
                 description="Elks National Foundation"
                 onChange={this.changeHandler}
               />
-              <DonationFieldItem
+              <DonationField
                 name="tallelks"
                 description="State Major Project Tall Elks Therapy Program"
                 onChange={this.changeHandler}
               />
               <h4>Lodge Charitable Items</h4>
-              <DonationFieldItem
+              <DonationField
                 name="scholarship"
                 description="Lodge Scholarship Fund"
                 onChange={this.changeHandler}

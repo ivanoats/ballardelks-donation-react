@@ -6,6 +6,7 @@ import {
   Box,
   Container,
   Link,
+  Paper,
   Toolbar,
   Typography,
 } from '@material-ui/core'
@@ -34,7 +35,9 @@ function App() {
       <main>
         <Container>
           <Box my={4}>
-            <DonationForm />
+            <Paper>
+              <DonationForm />
+            </Paper>
           </Box>
         </Container>
       </main>

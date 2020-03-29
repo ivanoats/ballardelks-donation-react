@@ -38,11 +38,11 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
   }
 
   private mapToValueObject = function (original: StrNumber) {
-    const newO: ValueObject = {}
+    const newValue: ValueObject = {}
     Object.entries(original).forEach((o: [string, number]) => {
-      newO[o[0]] = { value: o[1] }
+      newValue[o[0]] = { value: o[1] }
     })
-    return newO
+    return newValue
   }
 
   state: DonationFormState = {
@@ -76,21 +76,21 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
   }
 
   onCancel = (data: any) => {
-    console.log(`Cancelled: ${data}`)
+    console.log(`Cancelled`, data)
     this.setState({ status: 'Cancelled. Try again?' })
+  }
+  onSuccess = (payment: any) => {
+    console.log('Payment successful!', payment)
+    this.setState({ status: 'Success!' })
+  }
+  onError = (err: any) => {
+    console.log(`Error: ${err}`)
+    this.setState({ status: 'Error' })
   }
 
   render() {
     const client = {
       sandbox: process.env.REACT_APP_PAYPAL_SANDBOX,
-    }
-    const onSuccess = (payment: any) => {
-      console.log('Payment successful!', payment)
-      this.setState({ status: 'Success!' })
-    }
-    const onError = (err: any) => {
-      console.log(`Error: ${err}`)
-      this.setState({ status: 'Error' })
     }
     return (
       <Grid container spacing={4}>
@@ -180,9 +180,10 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
           </form>
           <h3>Total: $ {this.state.total}</h3>
           <PayPalExpressBtn
+            description={JSON.stringify(this.state.formControls)}
             env="sandbox"
-            onSuccess={onSuccess}
-            onError={onError}
+            onSuccess={this.onSuccess}
+            onError={this.onError}
             onCancel={this.onCancel}
             client={client}
             currency={'USD'}

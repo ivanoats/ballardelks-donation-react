@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PayPalExpressBtn from 'react-paypal-express-checkout'
+import DonationFieldItem from './DonationFieldItem'
+import Grid from '@material-ui/core/Grid'
 
 type DonationFormState = {
   total: number
-  formControls: any | null
+  formControls: any
 }
 
 type DonationFormProps = {
@@ -15,15 +17,16 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     membershipRate: 119,
   }
 
+  state: DonationFormState = {
+    formControls: {
+      elksnf: { value: 10 },
+      tallelks: { value: 10 },
+      scholarship: { value: 10 },
+    },
+    total: 0,
+  }
   constructor(props: DonationFormProps) {
     super(props)
-    this.state = {
-      formControls: {
-        elksnf: { value: 10 },
-        tallelks: { value: 10 },
-      },
-      total: 0,
-    }
   }
 
   changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -38,10 +41,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
       },
     }
 
-    console.log(newState)
-
     const totals = Object.values(newState.formControls).map((v: any) => v.value)
-    console.log(totals)
     const total = totals.reduce((a: number, b: number) => a + b, 0)
     this.setState({
       ...newState,
@@ -54,33 +54,45 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
       sandbox: process.env.REACT_APP_PAYPAL_SANDBOX,
     }
     return (
-      <div>
-        <form>
-          <fieldset>
-            <h5>Lodge Required Charities</h5>
-            <label htmlFor="elksnf">Elks National Foundation</label>
-            <input
-              name="elksnf"
-              onChange={this.changeHandler}
-              defaultValue={this.state.formControls.elksnf.value}
-            />
-            <label htmlFor="tallelks">
-              State Major Project Tall Elks Therapy Program
-            </label>
-            <input
-              name="tallelks"
-              onChange={this.changeHandler}
-              defaultValue={this.state.formControls.tallelks.value}
-            />
-          </fieldset>
-        </form>
-        <p>Total: {this.state.total}</p>
-        <PayPalExpressBtn
-          client={client}
-          currency={'USD'}
-          total={this.state.total}
-        />
-      </div>
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={6}>
+          <form>
+            <fieldset>
+              <h5>Regular Prepaid Dues 12 Months</h5>
+              <p>
+                Including per captia dues and assessments for Grand Lodge and
+                the Washington State Elks Association in accordance with the
+                Constitution and Section 14.300 of the Statues of the Order.
+              </p>
+              <h5>Lodge Required Charities</h5>
+              <DonationFieldItem
+                name="elksnf"
+                description="Elks National Foundation"
+                onChange={this.changeHandler}
+              />
+              <DonationFieldItem
+                name="tallelks"
+                description="State Major Project Tall Elks Therapy Program"
+                onChange={this.changeHandler}
+              />
+              <h5>Lodge Charitable Items</h5>
+              <DonationFieldItem
+                name="scholarship"
+                description="Lodge Scholarship Fund"
+                onChange={this.changeHandler}
+              />
+            </fieldset>
+          </form>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <p>Total: {this.state.total}</p>
+          <PayPalExpressBtn
+            client={client}
+            currency={'USD'}
+            total={this.state.total}
+          />
+        </Grid>
+      </Grid>
     )
   }
 }

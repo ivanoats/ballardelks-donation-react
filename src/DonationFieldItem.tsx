@@ -4,7 +4,7 @@ type DonationFieldItemProps = {
   name: string
   suggestedAmount?: number
   description?: string
-  onChange?: React.ChangeEvent<HTMLInputElement>
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 type DonationFieldItemState = {
@@ -27,12 +27,19 @@ class DonationFieldItem extends Component<
   }
   render() {
     return (
-      <input
-        type="text"
-        id={this.props.name}
-        name={this.props.name}
-        defaultValue={this.props.suggestedAmount}
-      />
+      <>
+        <label htmlFor={this.props.name}>
+          {this.props.description}{' '}
+          <span className="small">${this.props.suggestedAmount} Suggested</span>
+        </label>
+        <input
+          type="text"
+          id={this.props.name}
+          name={this.props.name}
+          defaultValue={this.props.suggestedAmount}
+          onChange={this.props.onChange}
+        />
+      </>
     )
   }
 }

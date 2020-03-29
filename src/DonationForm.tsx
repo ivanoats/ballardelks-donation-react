@@ -11,6 +11,7 @@ type StrNumber = { [key: string]: number }
 
 type DonationFormState = {
   total: number
+  status?: string
   formControls: ValueObject
 }
 
@@ -46,6 +47,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
 
   state: DonationFormState = {
     formControls: this.mapToValueObject(this.suggestedDonation),
+    status: 'Waiting for form to be filled and button pressed',
     total:
       this.totalSuggestedDonation(this.suggestedDonation) + this.props.dues,
   }
@@ -63,17 +65,32 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     }
 
     const totals = Object.values(newState.formControls).map((v: any) => v.value)
-    const total =
+    let total =
       this.props.dues + totals.reduce((a: number, b: number) => a + b, 0)
+    if (total < 0) total = 0
+    if (Number.isNaN(total)) total = 0
     this.setState({
       ...newState,
       total: total,
     })
   }
 
+  onCancel = (data: any) => {
+    console.log(`Cancelled: ${data}`)
+    this.setState({ status: 'Cancelled. Try again?' })
+  }
+
   render() {
     const client = {
       sandbox: process.env.REACT_APP_PAYPAL_SANDBOX,
+    }
+    const onSuccess = (payment: any) => {
+      console.log('Payment successful!', payment)
+      this.setState({ status: 'Success!' })
+    }
+    const onError = (err: any) => {
+      console.log(`Error: ${err}`)
+      this.setState({ status: 'Error' })
     }
     return (
       <Grid container spacing={4}>
@@ -136,13 +153,13 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
               <DonationField
                 name="childrenshospital"
                 description="Children's Hospital Donation"
-                suggestedDonation={12}
+                suggestedDonation={this.suggestedDonation.childrenshospital}
                 onChange={this.changeHandler}
               />
               <DonationField
                 name="xmasbaskets"
                 description="Christmas Baskets"
-                suggestedDonation={5}
+                suggestedDonation={this.suggestedDonation.xmasbaskets}
                 onChange={this.changeHandler}
               />
               <DonationField
@@ -163,10 +180,15 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
           </form>
           <h3>Total: $ {this.state.total}</h3>
           <PayPalExpressBtn
+            env="sandbox"
+            onSuccess={onSuccess}
+            onError={onError}
+            onCancel={this.onCancel}
             client={client}
             currency={'USD'}
             total={this.state.total}
           />
+          <h3>Payment status: {this.state.status}</h3>
         </Grid>
       </Grid>
     )

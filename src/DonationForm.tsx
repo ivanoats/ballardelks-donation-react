@@ -4,6 +4,7 @@ import DonationField from './DonationField'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import * as R from 'rambda'
 
 type ValueObject = { [key: string]: { value: number } }
 type StrNumber = { [key: string]: number }
@@ -23,10 +24,13 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
   }
 
   suggestedDonation: StrNumber = {
-    test: 6,
     elksnf: 10,
     tallelks: 10,
     scholarship: 10,
+  }
+
+  private totalSuggestedDonation = (sd: StrNumber) => {
+    return R.sum(Object.entries(sd).map((x) => x[1]))
   }
 
   private mapToValueObject = function (original: StrNumber) {
@@ -39,10 +43,8 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
 
   state: DonationFormState = {
     formControls: this.mapToValueObject(this.suggestedDonation),
-    total: 0,
-  }
-  constructor(props: DonationFormProps) {
-    super(props)
+    total:
+      this.totalSuggestedDonation(this.suggestedDonation) + this.props.dues,
   }
 
   changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -74,6 +76,12 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
         <Grid item xs={12} sm={6}>
           <form>
             <fieldset>
+              <p>
+                <TextField label="Member Name" required />
+              </p>
+              <p>
+                <TextField label="Membership Nuumber" required />
+              </p>
               <h4>Regular Prepaid Dues 12 Months</h4>
               <p>
                 Including per captia dues and assessments for Grand Lodge and
@@ -83,8 +91,9 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
               <TextField
                 id="dues"
                 label="Annual Dues"
+                required
                 defaultValue={this.props.dues}
-                helperText={`Requied Dues${this.props.dues}`}
+                helperText={`Requied Dues $${this.props.dues}`}
                 onChange={this.changeHandler}
                 InputProps={{
                   startAdornment: (

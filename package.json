@@ -11,6 +11,7 @@
     "@types/node": "^12.12.32",
     "@types/react": "^16.9.26",
     "@types/react-dom": "^16.9.5",
+    "rambda": "^5.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-paypal-express-checkout": "^1.0.5",

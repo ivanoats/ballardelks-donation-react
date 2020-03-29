@@ -35,7 +35,7 @@ function App() {
       <main>
         <Container>
           <Box my={4}>
-            <Paper>
+            <Paper style={{ padding: 25 }}>
               <DonationForm />
             </Paper>
           </Box>

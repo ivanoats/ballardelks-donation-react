@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import PayPalExpressBtn from 'react-paypal-express-checkout'
 import DonationField from './DonationField'
 import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import * as R from 'rambda'
+import TextField from '@material-ui/core/TextField'
 
 type ValueObject = { [key: string]: { value: number } }
 type StrNumber = { [key: string]: number }
@@ -27,6 +27,9 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     elksnf: 10,
     tallelks: 10,
     scholarship: 10,
+    childrenshospital: 12,
+    xmasbaskets: 5,
+    buildingfund: 10,
   }
 
   private totalSuggestedDonation = (sd: StrNumber) => {
@@ -73,9 +76,9 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     }
     return (
       <Grid container spacing={4}>
-        <Grid item xs={12} sm={6}>
+        <Grid item>
           <form>
-            <fieldset>
+            <fieldset style={{ border: 0 }}>
               <p>
                 <TextField label="Member Name" required />
               </p>
@@ -92,6 +95,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                 id="dues"
                 label="Annual Dues"
                 required
+                disabled
                 defaultValue={this.props.dues}
                 helperText={`Requied Dues $${this.props.dues}`}
                 onChange={this.changeHandler}
@@ -119,11 +123,26 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                 description="Lodge Scholarship Fund"
                 onChange={this.changeHandler}
               />
+              <DonationField
+                name="childrenshospital"
+                description="Children's Hospital Donation"
+                suggestedDonation={12}
+                onChange={this.changeHandler}
+              />
+              <DonationField
+                name="xmasbaskets"
+                description="Christmas Baskets"
+                suggestedDonation={5}
+                onChange={this.changeHandler}
+              />
+              <DonationField
+                name="buildingfund"
+                description="Building Fund"
+                onChange={this.changeHandler}
+              />
             </fieldset>
           </form>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <p>Total: {this.state.total}</p>
+          <p>Total: $ {this.state.total}</p>
           <PayPalExpressBtn
             client={client}
             currency={'USD'}

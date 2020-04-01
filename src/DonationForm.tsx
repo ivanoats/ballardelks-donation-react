@@ -37,12 +37,11 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     return R.sum(Object.entries(sd).map((x) => x[1]))
   }
 
-  private mapToValueObject = function (original: StrNumber) {
-    const newValue: ValueObject = {}
-    Object.entries(original).forEach((o: [string, number]) => {
-      newValue[o[0]] = { value: o[1] }
-    })
-    return newValue
+  private mapToValueObject = function (original: StrNumber): ValueObject {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return R.map((val, _) => {
+      return { value: val }
+    }, original)
   }
 
   state: DonationFormState = {
@@ -73,6 +72,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
       ...newState,
       total: total,
     })
+    console.log(JSON.stringify(this.state.formControls))
   }
 
   onCancel = (data: any) => {
@@ -107,7 +107,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
               <p>
                 <TextField
                   style={{ padding: 25 }}
-                  label="Membership Nuumber"
+                  label="Membership Number"
                   required
                 />
               </p>
@@ -167,12 +167,13 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
                 description="Building Fund"
                 onChange={this.changeHandler}
               />
+              <h3>Address Updates</h3>
               <p>
                 <TextField
                   multiline
                   name="comment"
                   variant="outlined"
-                  helperText="Comments or Address Updates"
+                  helperText="Let us know any comments or Address Updates necessary here"
                   rows="4"
                 />
               </p>

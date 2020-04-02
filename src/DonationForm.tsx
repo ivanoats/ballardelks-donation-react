@@ -34,7 +34,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
   }
 
   private totalSuggestedDonation = (sd: StrNumber) => {
-    return R.sum(Object.entries(sd).map((x) => x[1]))
+    return R.sum(R.values(sd))
   }
 
   private mapToValueObject = function (original: StrNumber): ValueObject {

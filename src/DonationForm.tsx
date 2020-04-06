@@ -12,6 +12,7 @@ type StrNumber = { [key: string]: number }
 type DonationFormState = {
   total: number
   status?: string
+  payPalButtonVisible: boolean
   formControls: ValueObject
 }
 
@@ -47,8 +48,16 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
   state: DonationFormState = {
     formControls: this.mapToValueObject(this.suggestedDonation),
     status: 'Waiting for form to be filled and button pressed',
+    payPalButtonVisible: false,
     total:
       this.totalSuggestedDonation(this.suggestedDonation) + this.props.dues,
+  }
+
+  requireMemberNameAndNumber = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    let target = event.target as HTMLInputElement
+    console.log(target.name, target.value)
   }
 
   changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -99,16 +108,22 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
             <fieldset style={{ border: 0 }}>
               <p>
                 <TextField
+                  name="memberName"
                   label="Member Name"
+                  helperText="Required: Member's full name"
+                  onChange={this.requireMemberNameAndNumber}
                   required
                   style={{ padding: 25 }}
                 />
               </p>
               <p>
                 <TextField
+                  name="memberNumber"
                   style={{ padding: 25 }}
                   label="Membership Number"
                   required
+                  onChange={this.requireMemberNameAndNumber}
+                  helperText="Required: Membership number"
                 />
               </p>
               <h3>Regular Prepaid Dues 12 Months</h3>

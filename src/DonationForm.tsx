@@ -14,6 +14,8 @@ type DonationFormState = {
   status?: string
   payPalButtonVisible: boolean
   formControls: ValueObject
+  memberName: string
+  memberNumber: string
 }
 
 type DonationFormProps = {
@@ -47,8 +49,11 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
 
   state: DonationFormState = {
     formControls: this.mapToValueObject(this.suggestedDonation),
-    status: 'Waiting for form to be filled and button pressed',
+    status:
+      'Waiting for form to be filled with required fields, and then the paypal button pressed',
     payPalButtonVisible: false,
+    memberName: '',
+    memberNumber: '',
     total:
       this.totalSuggestedDonation(this.suggestedDonation) + this.props.dues,
   }
@@ -57,7 +62,17 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     let target = event.target as HTMLInputElement
-    console.log(target.name, target.value)
+    const newField = { [target.name]: target.value }
+    let payPalButtonShouldBeVisible = false
+    if (
+      target.value.length > 2 &&
+      (this.state.memberName.length > 2 || this.state.memberNumber.length > 2)
+    )
+      payPalButtonShouldBeVisible = true
+    this.setState({
+      ...newField,
+      payPalButtonVisible: payPalButtonShouldBeVisible,
+    })
   }
 
   changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -81,7 +96,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
       ...newState,
       total: total,
     })
-    console.log(JSON.stringify(this.state.formControls))
+    console.log(JSON.stringify(this.state))
   }
 
   onCancel = (data: any) => {
@@ -100,6 +115,27 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
   render() {
     const client = {
       sandbox: process.env.REACT_APP_PAYPAL_SANDBOX,
+    }
+    let payPalButtonIfVisible
+    if (this.state.payPalButtonVisible) {
+      payPalButtonIfVisible = (
+        <PayPalExpressBtn
+          description={JSON.stringify(this.state.formControls)}
+          env="sandbox"
+          onSuccess={this.onSuccess}
+          onError={this.onError}
+          onCancel={this.onCancel}
+          client={client}
+          currency={'USD'}
+          total={this.state.total}
+        />
+      )
+    } else {
+      payPalButtonIfVisible = (
+        <p>
+          Payment Button will appear after all required fields are filled in
+        </p>
+      )
     }
     return (
       <Grid container spacing={4}>
@@ -195,16 +231,7 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
             </fieldset>
           </form>
           <h3>Total: $ {this.state.total}</h3>
-          <PayPalExpressBtn
-            description={JSON.stringify(this.state.formControls)}
-            env="sandbox"
-            onSuccess={this.onSuccess}
-            onError={this.onError}
-            onCancel={this.onCancel}
-            client={client}
-            currency={'USD'}
-            total={this.state.total}
-          />
+          {payPalButtonIfVisible}
           <h3>Payment status: {this.state.status}</h3>
         </Grid>
       </Grid>

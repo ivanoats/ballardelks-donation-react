@@ -115,13 +115,14 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
   render() {
     const client = {
       sandbox: process.env.REACT_APP_PAYPAL_SANDBOX,
+      production: process.env.REACT_APP_PAYPAL_PRODUCTION,
     }
     let payPalButtonIfVisible
     if (this.state.payPalButtonVisible) {
       payPalButtonIfVisible = (
         <PayPalExpressBtn
           description={JSON.stringify(this.state.formControls)}
-          env="sandbox"
+          env="production"
           onSuccess={this.onSuccess}
           onError={this.onError}
           onCancel={this.onCancel}

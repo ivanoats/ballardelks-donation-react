@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PayPalExpressBtn from 'react-paypal-express-checkout'
+import { PayPalButton } from 'react-paypal-button-v2'
 import DonationField from './DonationField'
 import Grid from '@material-ui/core/Grid'
 import InputAdornment from '@material-ui/core/InputAdornment'
@@ -119,16 +119,20 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     }
     let payPalButtonIfVisible
     if (this.state.payPalButtonVisible) {
+      const description = JSON.stringify(this.state.formControls)
+      console.log(description)
       payPalButtonIfVisible = (
-        <PayPalExpressBtn
-          description={JSON.stringify(this.state.formControls)}
-          env="production"
+        <PayPalButton
+          options={{
+            clientId: client.sandbox,
+            // description: description
+          }}
           onSuccess={this.onSuccess}
-          onError={this.onError}
+          catchError={this.onError}
           onCancel={this.onCancel}
           client={client}
           currency={'USD'}
-          total={this.state.total}
+          amount={this.state.total}
         />
       )
     } else {

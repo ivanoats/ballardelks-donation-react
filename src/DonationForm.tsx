@@ -119,18 +119,16 @@ class DonationForm extends Component<DonationFormProps, DonationFormState> {
     }
     let payPalButtonIfVisible
     if (this.state.payPalButtonVisible) {
-      const description = JSON.stringify(this.state.formControls)
+      const description = JSON.stringify(this.state.formControls, null, 2)
       console.log(description)
       payPalButtonIfVisible = (
         <PayPalButton
           options={{
             clientId: client.sandbox,
-            // description: description
           }}
           onSuccess={this.onSuccess}
           catchError={this.onError}
-          onCancel={this.onCancel}
-          client={client}
+          // onCancel={this.onCancel}
           currency={'USD'}
           amount={this.state.total}
         />

@@ -24,7 +24,7 @@ type DonationFormProps = {
 
 class DonationForm extends Component<DonationFormProps, DonationFormState> {
   static defaultProps = {
-    dues: 119,
+    dues: 124,
   }
 
   suggestedDonation: StrNumber = {

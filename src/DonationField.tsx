@@ -9,7 +9,7 @@ type DonationFieldProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function (props: DonationFieldProps) {
+export default function DonationField(props: DonationFieldProps) {
   const sd = props.suggestedDonation ? props.suggestedDonation : 10
   return (
     <TextField

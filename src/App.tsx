@@ -9,7 +9,7 @@ import {
   Paper,
   Toolbar,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 
 function Copyright() {
   return (

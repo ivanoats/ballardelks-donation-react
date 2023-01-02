@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { PayPalButton } from 'react-paypal-button-v2'
 import DonationField from './DonationField'
-import Grid from '@material-ui/core/Grid'
-import InputAdornment from '@material-ui/core/InputAdornment'
+import Grid from '@mui/material/Grid'
+import InputAdornment from '@mui/material/InputAdornment'
 import * as R from 'rambda'
-import TextField from '@material-ui/core/TextField'
+import TextField from '@mui/material/TextField'
 
 type ValueObject = { [key: string]: { value: number } }
 type StrNumber = { [key: string]: number }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Formik } from 'formik'
 import { DonationFormik } from './DonationFormik'
-import Paper from '@material-ui/core/Paper'
+import Paper from '@mui/material/Paper'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({

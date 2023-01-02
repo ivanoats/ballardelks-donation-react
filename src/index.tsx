@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { CssBaseline } from '@material-ui/core'
+import { CssBaseline } from '@mui/material'
 
 ReactDOM.render(
   <React.StrictMode>

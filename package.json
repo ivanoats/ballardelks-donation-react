@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "/payments",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.11.3",
     "@mui/styles": "^5.11.2",
     "@testing-library/jest-dom": "^5.16.5",
